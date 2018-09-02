@@ -2,7 +2,7 @@
   "name": "script2svg-cli",
   "version": "0.0.1",
   "main": "./index.js",
-  "bin": "node ./index.js",
+  "bin": "./index.js",
   "private": true,
   "dependencies": {
     "jsdom": "^12.0.0",

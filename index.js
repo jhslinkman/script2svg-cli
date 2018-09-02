@@ -18,8 +18,6 @@ const {
     VirtualConsole,
 } = require('jsdom');
 
-console.log(process.cwd());
-
 const mfs = new MemoryFS();
 const compiler = webpack({
     mode: 'production',

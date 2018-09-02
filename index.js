@@ -18,10 +18,12 @@ const {
     VirtualConsole,
 } = require('jsdom');
 
+console.log(process.cwd());
+
 const mfs = new MemoryFS();
 const compiler = webpack({
     mode: 'production',
-    entry: argv._[0],
+    entry: path.join(process.cwd(), argv._[0]),
     output: {
         path: TMP_DIR,
         filename: TMP_FILE,

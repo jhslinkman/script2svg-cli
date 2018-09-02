@@ -2,29 +2,31 @@ const webpack = require('webpack');
 const argv = require('minimist')(process.argv.slice(2));
 const path = require('path');
 const fs = require('fs');
+const MemoryFS = require('memory-fs');
 const opn = require('opn');
 const {
     Script,
 } = require('vm');
 
 const OUTPUT_FILE = argv.output || argv.o;
+const TMP_DIR = '/tmp';
+const TMP_FILE = `tmp-${Date.now()}.js`;
 
 const {
     JSDOM,
     VirtualConsole,
 } = require('jsdom');
 
-const outputFilename = `./tmp-${Date.now()}.js`;
-
+const mfs = new MemoryFS();
 const compiler = webpack({
     mode: 'production',
     entry: path.join(__dirname, argv._[0]),
     output: {
-        path: __dirname,
-        filename: outputFilename,
+        path: TMP_DIR,
+        filename: TMP_FILE,
     },
 });
-
+compiler.outputFileSystem = mfs;
 compiler.run((err, stats) => {
     if (err) {
         console.log(err);
@@ -38,10 +40,7 @@ compiler.run((err, stats) => {
         process.statusCode = 1;
         return;
     }
-    const script = fs.readFileSync(outputFilename, {
-        encoding: 'utf-8',
-    });
-    fs.unlinkSync(outputFilename);
+    const script = mfs.readFileSync(path.join(TMP_DIR, TMP_FILE));
     execute(script);
 });
 

@@ -21,7 +21,7 @@ const {
 const mfs = new MemoryFS();
 const compiler = webpack({
     mode: 'production',
-    entry: path.join(__dirname, argv._[0]),
+    entry: argv._[0],
     output: {
         path: TMP_DIR,
         filename: TMP_FILE,
